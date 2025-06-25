@@ -1,0 +1,14 @@
+// server-attacker.js
+const express = require('express');
+const path = require('path');
+
+const app = express();
+
+// Chỉ cần serve static folder public/attacker
+app.use(express.static(path.join(__dirname, 'public/attacker')));
+
+const PORT = 8081;
+app.listen(PORT, 'attacker.local', () => {
+  console.log(`→ Attacker server is running at http://attacker.local:${PORT}/attacker.html`);
+});
+

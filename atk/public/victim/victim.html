@@ -1,0 +1,79 @@
+<!-- public/victim/victim.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Victim Page</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #btn-like {
+      padding: 15px 30px;
+      background: #4267B2;
+      color: white;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    #btn-reset {
+      padding: 15px 30px;
+      background: #dc3545;
+      color: white;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+    }
+    #like-count {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Victim Page</h1>
+  <button id="btn-like">👍 Like this page</button>
+  <button id="btn-reset">🔄 Reset Likes</button>
+  <p id="like-count">Likes: 0</p>
+
+  <script>
+    const API_BASE = 'http://localhost:3000/api';
+
+    const btnLike = document.getElementById('btn-like');
+    const btnReset = document.getElementById('btn-reset');
+    const display = document.getElementById('like-count');
+
+    // Lấy số like
+    function fetchCount() {
+      fetch(`${API_BASE}/like-count`, { credentials: 'include' })
+        .then(res => res.json())
+        .then(data => { display.textContent = `Likes: ${data.count}`; })
+        .catch(console.error);
+    }
+
+    // Xử lý Like
+    btnLike.addEventListener('click', () => {
+      fetch(`${API_BASE}/like`, { method: 'POST', credentials: 'include' })
+        .then(res => res.json())
+        .then(data => { display.textContent = `Likes: ${data.count}`; })
+        .catch(console.error);
+    });
+
+    // Xử lý Reset
+    btnReset.addEventListener('click', () => {
+      fetch(`${API_BASE}/reset`, { method: 'POST', credentials: 'include' })
+        .then(res => res.json())
+        .then(data => { display.textContent = `Likes: ${data.count}`; })
+        .catch(console.error);
+    });
+
+    // Polling mỗi 2 giây
+    fetchCount();
+    setInterval(fetchCount, 2000);
+  </script>
+</body>
+</html>
